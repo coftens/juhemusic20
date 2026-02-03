@@ -60,7 +60,9 @@ class QueueContext {
 
 class PlayerService extends ChangeNotifier {
   PlayerService._();
-
+  
+  static int debugPlayerCount = 0; // DEBUG ONLY
+  
   static final instance = PlayerService._();
 
   final _api = PhpApiClient();
@@ -194,7 +196,9 @@ class PlayerService extends ChangeNotifier {
 
   void _ensurePlayer() {
     if (_player != null) return;
+    if (_player != null) return;
     final p = AudioPlayer();
+    debugPlayerCount++; // DEBUG: Count new player instances
     _player = p;
     _subs.add(
       p.positionStream.listen((pos) {
