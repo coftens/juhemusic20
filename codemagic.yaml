@@ -14,19 +14,19 @@ workflows:
         script: flutter pub get
       - name: Build and Package IPA
         script: |
-          # 1. 运行构建命令
-          flutter build ipa --release --no-codesign
+          # 1. 改用 build ios 生成 .app (比 build ipa 更稳健)
+          flutter build ios --release --no-codesign
           
-          # 2. 手动创建 Payload 结构
+          # 2. 创建 Payload
           mkdir -p build/ios/ipa/Payload
           
-          # 3. 使用 find 查找 .app 文件 (兼容任何名称)
-          echo "Looking for .app file..."
-          APP_PATH=$(find build/ios/archive -name "*.app" -type d | head -n 1)
+          # 3. 全局查找 .app 文件
+          echo "Looking for .app file in build/ios..."
+          APP_PATH=$(find build/ios -name "*.app" -type d | head -n 1)
           
           if [ -z "$APP_PATH" ]; then
-            echo "❌ Error: .app file not found in archive!"
-            echo "Listing build directory for debugging:"
+            echo "❌ Error: .app file not found!"
+            echo "Listing build directory:"
             ls -R build/ios
             exit 1
           fi
@@ -34,7 +34,7 @@ workflows:
           echo "✅ Found app at: $APP_PATH"
           cp -r "$APP_PATH" build/ios/ipa/Payload/
           
-          # 4. 压缩成标准的 .ipa 文件
+          # 4. 压缩
           cd build/ios/ipa
           zip -r juhemusic.ipa Payload
     artifacts:
