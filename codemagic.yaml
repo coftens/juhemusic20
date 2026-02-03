@@ -19,12 +19,24 @@ workflows:
           
           # 2. 手动创建 Payload 结构
           mkdir -p build/ios/ipa/Payload
-          # 使用通配符匹配任何名称的 .xcarchive 和 .app
-          cp -r build/ios/archive/*.xcarchive/Products/Applications/*.app build/ios/ipa/Payload/
           
-          # 3. 压缩成标准的 .ipa 文件
+          # 3. 使用 find 查找 .app 文件 (兼容任何名称)
+          echo "Looking for .app file..."
+          APP_PATH=$(find build/ios/archive -name "*.app" -type d | head -n 1)
+          
+          if [ -z "$APP_PATH" ]; then
+            echo "❌ Error: .app file not found in archive!"
+            echo "Listing build directory for debugging:"
+            ls -R build/ios
+            exit 1
+          fi
+          
+          echo "✅ Found app at: $APP_PATH"
+          cp -r "$APP_PATH" build/ios/ipa/Payload/
+          
+          # 4. 压缩成标准的 .ipa 文件
           cd build/ios/ipa
-          zip -rv juhemusic.ipa Payload
+          zip -r juhemusic.ipa Payload
     artifacts:
       - build/ios/ipa/*.ipa
     publishing:
