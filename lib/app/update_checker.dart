@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../api/php_api_client.dart';
 
 /// Current app version. Increment this on each release.
-const String appVersion = '7.05';
+const String appVersion = '7.06';
 
 class UpdateChecker {
   static bool _hasChecked = false;
