@@ -323,7 +323,7 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                               },
                             )
                           : ListView(
-                              padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+                              padding: const EdgeInsets.fromLTRB(16, 10, 16, 160),
                               children: [
                                 _IconGrid(),
                                 const SizedBox(height: 16),
@@ -694,7 +694,7 @@ class _ResultsList extends StatelessWidget {
       return Center(child: Text('暂无结果', style: theme.textTheme.bodyMedium?.copyWith(color: Colors.black45)));
     }
     return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(12, 10, 12, 16),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 160),
       itemCount: results.length,
       separatorBuilder: (_, __) => Divider(color: Colors.black.withOpacity(0.05)),
       itemBuilder: (context, i) {

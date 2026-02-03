@@ -356,8 +356,8 @@ class _MePageState extends State<MePage> {
                             ],
                           ]),
                         ),
-                        // Add extra padding at the bottom so content isn't hidden by the floating pill nav
-                        SliverPadding(padding: EdgeInsets.only(bottom: 100 + MediaQuery.of(context).padding.bottom)),
+                        // Add extra padding at the bottom so content isn't hidden by mini player
+                        const SliverToBoxAdapter(child: SizedBox(height: 160)),
                       ],
                     ),
                   ),
