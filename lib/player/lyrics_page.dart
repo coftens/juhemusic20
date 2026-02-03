@@ -106,9 +106,15 @@ class _LyricsPageState extends State<LyricsPage> {
     // 缓冲时暂停歌词滚动，防止歌词抢跑
     if (_svc.isBuffering) return;
     
-    // 修正：iOS/JustAudio 存在约 400ms 的延迟，导致歌词比音乐快
-    // 这里手动减去偏移量以同步
-    final ms = math.max(0, pos.inMilliseconds - 400);
+    // 修正：iOS/JustAudio 在高音质(FLAC/HiRes等)下存在约 400ms 的解码/输出延迟
+    // 低音质通常没有此问题，因此只对高音质应用偏移
+    final q = _svc.quality;
+    final isHq = q.contains('flac') || q.contains('hires') || q.contains('master') || 
+                 q.contains('atmos') || q.contains('sky') || q.contains('effect') || 
+                 q.contains('320'); // 320kbps 也视为高音质
+                 
+    final offset = isHq ? 400 : 0;
+    final ms = math.max(0, pos.inMilliseconds - offset);
     final idx = _findActiveIndex(ms);
     if (idx == _activeIndex) return;
     _activeIndex = idx;
