@@ -133,7 +133,7 @@ class _MePageState extends State<MePage> {
   }
 
   double _sheetRadius = 18.0;
-  double _sheetExtent = 0.62; // Track sheet extent for profile scaling
+  double _sheetExtent = 0.45; // Track sheet extent for profile scaling
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +174,8 @@ class _MePageState extends State<MePage> {
                 const SizedBox(height: 8),
                 // Center the profile section in the remaining space above the sheet
                 Expanded(
-                  child: Center(
+                  child: Align(
+                    alignment: const Alignment(0, -0.2), // Bias slightly up to fit the "boxed" area
                     child: Builder(builder: (context) {
                       // t0: 0.0 (sheet at 0.38) -> 1.0 (sheet at 1.0)
                       final t0 = ((_sheetExtent - 0.38) / (1.0 - 0.38)).clamp(0.0, 1.0);
@@ -294,11 +295,11 @@ class _MePageState extends State<MePage> {
               return true;
             },
             child: DraggableScrollableSheet(
-              initialChildSize: 0.62,
+              initialChildSize: 0.45,
               minChildSize: 0.38,
               maxChildSize: 1.0, // Allow full screen
               snap: true, // Enable snapping
-              snapSizes: const [0.38, 0.62, 1.0], // Snap points
+              snapSizes: const [0.38, 0.45, 1.0], // Snap points
               builder: (context, scrollController) {
                 return AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
